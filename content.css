@@ -1,0 +1,58 @@
+/* X Downloader – Save Button — кнопка скачивания.
+   В панели действий поста, правее "Поделиться"; только у постов с видео/GIF.
+   Стиль — как у родных кнопок действий X. */
+
+.xvd-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 34px;
+  height: 34px;
+  margin: 0;
+  padding: 0;
+  background-color: transparent;
+  border: 0;
+  border-radius: 9999px;
+  color: rgb(113, 118, 123);
+  cursor: pointer;
+}
+
+/* круг подсветки при наведении */
+.xvd-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  background-color: transparent;
+  transition: background-color 0.2s;
+}
+
+.xvd-btn:hover {
+  color: #1d9bf0;
+}
+
+.xvd-btn:hover::before {
+  background-color: rgba(29, 155, 240, 0.1);
+}
+
+.xvd-btn svg {
+  position: relative;
+  display: block;
+  width: 19px;
+  height: 19px;
+}
+
+.xvd-btn.xvd-loading {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.xvd-btn.xvd-ok {
+  color: #00ba7c !important;
+}
+
+.xvd-btn.xvd-err {
+  color: #f4212e !important;
+}

@@ -6,6 +6,10 @@ Save any video or GIF from **X (formerly Twitter)** with a single click. This li
 ![Platform](https://img.shields.io/badge/platform-Chrome%20%7C%20Edge%20%7C%20Brave-blue)
 ![Privacy](https://img.shields.io/badge/privacy-no%20tracking-success)
 
+![X Downloader – the Save button sitting in a post's action bar, right next to Share](assets/preview.png)
+
+> **Scroll, spot a video, grab it in one click.** The **Save** button lives right next to Share in every post's action bar — no extra websites, no pasting links, no ads.
+
 ---
 
 ## ✨ Features

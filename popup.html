@@ -1,25 +1,113 @@
 <!doctype html>
-<html lang="en">
+<html lang="ru">
 <head>
   <meta charset="utf-8">
   <link rel="stylesheet" href="popup.css">
 </head>
 <body>
-  <header>
-    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14.4697 10.4697C14.7626 10.1768 15.2374 10.1768 15.5303 10.4697C15.8232 10.7626 15.8232 11.2374 15.5303 11.5303L12.5303 14.5303C12.2374 14.8232 11.7626 14.8232 11.4697 14.5303L8.46967 11.5303C8.17678 11.2374 8.17678 10.7626 8.46967 10.4697C8.76256 10.1768 9.23744 10.1768 9.53033 10.4697L11.25 12.1893V4C11.25 3.58579 11.5858 3.25 12 3.25C12.4142 3.25 12.75 3.58579 12.75 4V12.1893L14.4697 10.4697Z" fill="currentColor"></path><path d="M20.75 12C20.75 11.5858 20.4142 11.25 20 11.25C19.5858 11.25 19.25 11.5858 19.25 12C19.25 16.0041 16.0041 19.25 12 19.25C7.99593 19.25 4.75 16.0041 4.75 12C4.75 11.5858 4.41421 11.25 4 11.25C3.58579 11.25 3.25 11.5858 3.25 12C3.25 16.8325 7.16751 20.75 12 20.75C16.8325 20.75 20.75 16.8325 20.75 12Z" fill="currentColor"></path></svg>
-    <h1>X Downloader</h1>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M14.4697 10.4697C14.7626 10.1768 15.2374 10.1768 15.5303 10.4697C15.8232 10.7626 15.8232 11.2374 15.5303 11.5303L12.5303 14.5303C12.2374 14.8232 11.7626 14.8232 11.4697 14.5303L8.46967 11.5303C8.17678 11.2374 8.17678 10.7626 8.46967 10.4697C8.76256 10.1768 9.23744 10.1768 9.53033 10.4697L11.25 12.1893V4C11.25 3.58579 11.5858 3.25 12 3.25C12.4142 3.25 12.75 3.58579 12.75 4V12.1893L14.4697 10.4697Z" fill="currentColor"></path>
+          <path d="M20.75 12C20.75 11.5858 20.4142 11.25 20 11.25C19.5858 11.25 19.25 11.5858 19.25 12C19.25 16.0041 16.0041 19.25 12 19.25C7.99593 19.25 4.75 16.0041 4.75 12C4.75 11.5858 4.41421 11.25 4 11.25C3.58579 11.25 3.25 11.5858 3.25 12C3.25 16.8325 7.16751 20.75 12 20.75C16.8325 20.75 20.75 16.8325 20.75 12Z" fill="currentColor"></path>
+        </svg>
+      </div>
+      <div class="brand-text">
+        <h1>X Downloader</h1>
+        <span class="brand-sub">Видео, GIF и локальный перевод</span>
+      </div>
+    </div>
+    <span class="ver-pill">v1.5</span>
   </header>
 
-  <label class="row">
-    <div class="text">
-      <span class="title">Save button</span>
-      <span class="sub">On posts with video or GIF</span>
-    </div>
-    <input type="checkbox" id="download">
-    <span class="switch"></span>
-  </label>
+  <main class="stack">
+    <section class="card">
+      <label class="row">
+        <div class="text">
+          <span class="title">Кнопка скачивания</span>
+          <span class="sub">В постах с видео или GIF</span>
+        </div>
+        <input type="checkbox" id="download">
+        <span class="switch"></span>
+      </label>
 
-  <p class="hint">The button appears in the action bar of posts that contain a video or GIF.</p>
+      <div class="divider"></div>
+
+      <label class="row">
+        <div class="text">
+          <span class="title">Кнопка автоперевода</span>
+          <span class="sub">Слева от скачивания · В вёрстке</span>
+        </div>
+        <input type="checkbox" id="translate">
+        <span class="switch"></span>
+      </label>
+
+      <div class="divider"></div>
+
+      <label class="row">
+        <div class="text">
+          <span class="title">Копирование картинок</span>
+          <span class="sub">Иконка справа снизу при наведении</span>
+        </div>
+        <input type="checkbox" id="copyImage">
+        <span class="switch"></span>
+      </label>
+
+      <div class="divider"></div>
+
+      <div class="row row-static">
+        <div class="text">
+          <span class="title">Язык перевода</span>
+          <span class="sub">По умолчанию — русский</span>
+        </div>
+        <select id="targetLang" class="lang-select" aria-label="Язык перевода">
+          <option value="ru">Русский</option>
+          <option value="en">English</option>
+          <option value="de">Deutsch</option>
+          <option value="es">Español</option>
+          <option value="fr">Français</option>
+          <option value="zh">中文 (简体)</option>
+          <option value="ja">日本語</option>
+          <option value="ko">한국어</option>
+          <option value="tr">Türkçe</option>
+        </select>
+      </div>
+    </section>
+
+    <section class="card vram-card">
+      <div class="vram-head">
+        <div class="vram-model">
+          <span class="status-dot" id="status-dot"></span>
+          <span class="vram-name" id="vram-name">Bonsai 2 · 4B</span>
+        </div>
+        <div class="vram-actions">
+          <span class="state-pill" id="state-pill">Проверка…</span>
+          <button type="button" class="unload-btn" id="unload-btn" hidden>Выгрузить</button>
+        </div>
+      </div>
+
+      <div class="mem-bar" aria-label="Занято и свободно памяти">
+        <div class="mem-seg mem-seg-sys" id="bar-sys" style="width: 0%"></div>
+        <div class="mem-seg mem-seg-model" id="bar-model" style="width: 0%"></div>
+      </div>
+
+      <div class="metrics">
+        <div class="metric-tile">
+          <span class="metric-label">Загружено моделью</span>
+          <span class="metric-value" id="loaded-mem">—</span>
+          <span class="metric-sub" id="loaded-sub">проверка…</span>
+        </div>
+        <div class="metric-tile">
+          <span class="metric-label">Свободно памяти</span>
+          <span class="metric-value" id="free-mem">—</span>
+          <span class="metric-sub" id="free-sub">ожидание моста</span>
+        </div>
+      </div>
+    </section>
+
+    <p class="hint">Модель загружается в VRAM только по нажатию Translate и автоматически выгружается через 2.5 мин простоя.</p>
+  </main>
 
   <script src="popup.js"></script>
 </body>

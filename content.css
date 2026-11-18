@@ -1,15 +1,24 @@
-/* X Downloader – Save Button — кнопка скачивания.
-   В панели действий поста, правее "Поделиться"; только у постов с видео/GIF.
-   Стиль — как у родных кнопок действий X. */
+/* X Downloader – Save & Translate buttons + in-place smooth translation UI.
+   Кнопки обёрнуты в .xvd-action-slot и точно выровнены как в ленте/комментариях,
+   так и в растянутом фокальном баре статуса (.r-h3s6tt). */
 
-.xvd-btn {
-  position: relative;
-  display: flex;
+.xvd-action-slot {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
+  align-self: center;
   flex-shrink: 0;
-  width: 34px;
-  height: 34px;
+  margin-left: 12px;
+}
+
+.xvd-btn,
+.xvd-tr-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 19px;
+  height: 19px;
   margin: 0;
   padding: 0;
   background-color: transparent;
@@ -19,40 +28,258 @@
   cursor: pointer;
 }
 
-/* круг подсветки при наведении */
-.xvd-btn::before {
+/* центрированный круг подсветки при наведении */
+.xvd-btn::before,
+.xvd-tr-btn::before {
   content: "";
   position: absolute;
-  inset: 0;
+  top: 50%;
+  left: 50%;
+  width: 35px;
+  height: 35px;
+  transform: translate(-50%, -50%);
   border-radius: 9999px;
   background-color: transparent;
   transition: background-color 0.2s;
+  pointer-events: none;
 }
 
-.xvd-btn:hover {
+.xvd-btn:hover,
+.xvd-tr-btn:hover,
+.xvd-tr-btn.xvd-tr-active {
   color: #1d9bf0;
 }
 
-.xvd-btn:hover::before {
+.xvd-btn:hover::before,
+.xvd-tr-btn:hover::before {
   background-color: rgba(29, 155, 240, 0.1);
 }
 
-.xvd-btn svg {
+.xvd-tr-btn.xvd-tr-active::before {
+  background-color: rgba(29, 155, 240, 0.12);
+}
+
+.xvd-btn svg,
+.xvd-tr-btn svg {
   position: relative;
   display: block;
   width: 19px;
   height: 19px;
 }
 
-.xvd-btn.xvd-loading {
-  opacity: 0.5;
-  cursor: default;
+/* Фокальный бар открытого поста (.r-h3s6tt: height 48px, align-items stretch, иконки 22.5px) */
+div[role="group"].r-h3s6tt > div:not(.r-13awgt0):not(.xvd-action-slot):has(~ .xvd-action-slot) {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  flex: 1 1 0% !important;
 }
 
-.xvd-btn.xvd-ok {
+div[role="group"].r-h3s6tt > .xvd-action-slot {
+  margin-left: 0;
+}
+
+div[role="group"].r-h3s6tt > .xvd-action-slot:has(+ .xvd-action-slot) {
+  flex: 1 1 0%;
+  justify-content: flex-start;
+}
+
+div[role="group"].r-h3s6tt .xvd-btn,
+div[role="group"].r-h3s6tt .xvd-tr-btn {
+  width: 22.5px;
+  height: 22.5px;
+}
+
+div[role="group"].r-h3s6tt .xvd-btn svg,
+div[role="group"].r-h3s6tt .xvd-tr-btn svg {
+  width: 22px;
+  height: 22px;
+}
+
+div[role="group"].r-h3s6tt .xvd-btn::before,
+div[role="group"].r-h3s6tt .xvd-tr-btn::before {
+  width: 38px;
+  height: 38px;
+}
+
+.xvd-btn.xvd-loading,
+.xvd-tr-btn.xvd-loading {
+  opacity: 0.7;
+  cursor: progress;
+  color: #1d9bf0;
+  animation: xvd-pulse 1s ease-in-out infinite;
+}
+
+@keyframes xvd-pulse {
+  0%, 100% {
+    opacity: 0.45;
+    transform: scale(0.95);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.06);
+  }
+}
+
+.xvd-btn.xvd-ok,
+.xvd-tr-btn.xvd-ok {
   color: #00ba7c !important;
 }
 
-.xvd-btn.xvd-err {
+.xvd-btn.xvd-err,
+.xvd-tr-btn.xvd-err {
   color: #f4212e !important;
+}
+
+/* Подмена текста поста и плавный морфинг символов */
+.xvd-orig-hidden {
+  display: none !important;
+}
+
+.xvd-translated-block {
+  display: block;
+  white-space: pre-wrap;
+  word-break: break-word;
+  -webkit-line-clamp: unset !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+.xvd-anim-tail {
+  opacity: 0.38;
+  transition: opacity 0.12s;
+}
+
+.xvd-tr-link {
+  color: rgb(29, 155, 240);
+  text-decoration: none;
+}
+
+.xvd-tr-link:hover {
+  text-decoration: underline;
+}
+
+/* Верхний бейдж Bonsai 2 (либо отдельная строка над текстом, либо чип справа от родного блока X) */
+.xvd-tr-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-bottom: 4px;
+  color: rgb(113, 118, 123);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 13px;
+  line-height: 16px;
+}
+
+.xvd-tr-bar svg {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  color: rgb(113, 118, 123);
+}
+
+.xvd-tr-inline-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-left: 6px;
+  vertical-align: baseline;
+  color: rgb(113, 118, 123);
+  font-size: 13px;
+  line-height: 16px;
+}
+
+.xvd-tr-sep {
+  opacity: 0.65;
+}
+
+.xvd-tr-meta {
+  color: rgb(113, 118, 123);
+  font-weight: 500;
+}
+
+.xvd-tr-toggle {
+  display: inline-flex;
+  align-items: center;
+  padding: 1px 7px;
+  border: 0;
+  border-radius: 9999px;
+  background: transparent;
+  color: rgb(29, 155, 240);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 16px;
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+
+.xvd-tr-toggle:hover {
+  background-color: rgba(29, 155, 240, 0.1);
+  text-decoration: none;
+}
+
+/* Мини-кнопка копирования картинки в буфер обмена при наведении */
+.xvd-copy-img-btn {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  z-index: 6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  margin: 0;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 8px;
+  background: rgba(15, 20, 25, 0.76);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  color: #fff;
+  cursor: pointer;
+  opacity: 0;
+  transform: scale(0.92);
+  pointer-events: none;
+  transition: opacity 0.16s ease, transform 0.16s ease, background-color 0.15s, color 0.15s;
+}
+
+[data-testid="tweetPhoto"]:hover .xvd-copy-img-btn,
+.xvd-copy-img-btn:focus-visible,
+.xvd-copy-img-btn.xvd-loading,
+.xvd-copy-img-btn.xvd-ok,
+.xvd-copy-img-btn.xvd-err {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto;
+}
+
+.xvd-copy-img-btn:hover {
+  background: rgba(29, 155, 240, 0.88);
+  border-color: rgba(255, 255, 255, 0.28);
+}
+
+.xvd-copy-img-btn svg {
+  display: block;
+  width: 15px;
+  height: 15px;
+}
+
+.xvd-copy-img-btn.xvd-loading {
+  cursor: progress;
+  opacity: 1;
+}
+
+.xvd-copy-img-btn.xvd-ok {
+  background: rgba(0, 186, 124, 0.9) !important;
+  border-color: rgba(255, 255, 255, 0.28);
+  color: #fff !important;
+}
+
+.xvd-copy-img-btn.xvd-err {
+  background: rgba(244, 33, 46, 0.9) !important;
+  color: #fff !important;
 }
